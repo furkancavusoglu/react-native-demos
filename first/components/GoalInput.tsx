@@ -1,13 +1,6 @@
-import { useState } from "react";
-import {
-  StyleSheet,
-  View,
-  TextInput,
-  Button,
-  Modal,
-  Image,
-} from "react-native";
-import goalImage from "../assets/images/goal.png";
+import { useState } from 'react';
+import { StyleSheet, View, TextInput, Button, Modal, Image } from 'react-native';
+import goalImage from '../assets/images/goal.png';
 
 interface GoalInputProps {
   onAddGoal: (enteredGoal: string) => void;
@@ -16,7 +9,7 @@ interface GoalInputProps {
 }
 
 export function GoalInput({ onAddGoal, visible, onCancel }: GoalInputProps) {
-  const [enteredGoal, setEnteredGoal] = useState<string>("");
+  const [enteredGoal, setEnteredGoal] = useState<string>('');
 
   const goalInputHandler = (enteredText: string) => {
     setEnteredGoal(enteredText);
@@ -27,7 +20,7 @@ export function GoalInput({ onAddGoal, visible, onCancel }: GoalInputProps) {
       return;
     }
     onAddGoal(enteredGoal);
-    setEnteredGoal("");
+    setEnteredGoal('');
   };
 
   return (
@@ -56,23 +49,23 @@ export function GoalInput({ onAddGoal, visible, onCancel }: GoalInputProps) {
 const styles = StyleSheet.create({
   inputContainer: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     padding: 16,
-    backgroundColor: "#311b6b",
+    backgroundColor: '#311b6b',
   },
   textInput: {
     borderWidth: 1,
-    borderColor: "#e4d0ff",
-    backgroundColor: "#e4d0ff",
-    color: "#120438",
+    borderColor: '#e4d0ff',
+    backgroundColor: '#e4d0ff',
+    color: '#120438',
     borderRadius: 6,
-    width: "100%",
+    width: '100%',
     padding: 16,
   },
   buttonContainer: {
     marginTop: 16,
-    flexDirection: "row",
+    flexDirection: 'row',
     gap: 8,
   },
   button: {
