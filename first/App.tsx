@@ -1,19 +1,64 @@
 import { useState } from "react";
-import { StyleSheet, Text, View, Button, TextInput } from "react-native";
+import { StyleSheet, View, FlatList, Button } from "react-native";
+import { GoalItem } from "./components/GoalItem";
+import { GoalInput } from "./components/GoalInput";
+
+type GoalItem = {
+  text: string;
+  key: string;
+};
 
 export default function App() {
-  const [courseGoals, setCourseGoals] = useState<string[]>([]);
+  const [courseGoals, setCourseGoals] = useState<GoalItem[]>([]);
+  const [modalIsVisible, setModalIsVisible] = useState(false);
+
+  function startAddGoalHandler() {
+    setModalIsVisible(true);
+  }
+
+  function endAddGoalHandler() {
+    setModalIsVisible(false);
+  }
+
+  const addGoalHandler = (enteredGoal: string) => {
+    setCourseGoals((prevGoals) => [
+      ...prevGoals,
+      { text: enteredGoal, key: Math.random().toString() },
+    ]);
+    endAddGoalHandler();
+  };
+
+  const deleteGoalHandler = (goalId: string) => {
+    setCourseGoals((prevGoals) => 
+      prevGoals.filter((goal) => goal.key !== goalId)
+    );
+  };
 
   return (
     <View style={styles.appContainer}>
-      <View style={styles.inputContainer}>
-        <TextInput placeholder="Your course goal" style={styles.textInput} />
-        <View style={styles.button}>
-          <Button title="Add Goal" />
-        </View>
+      <View style={styles.buttonContainer}>
+        <Button 
+          title="Add New Goal" 
+          onPress={startAddGoalHandler} 
+          color="#5e0acc"
+        />
       </View>
-      <View>
-        <Text>List of goals</Text>
+      <GoalInput 
+        visible={modalIsVisible}
+        onAddGoal={addGoalHandler}
+        onCancel={endAddGoalHandler}
+      />
+      <View style={styles.goalsContainer}>
+        <FlatList
+          data={courseGoals}
+          renderItem={({ item }) => (
+            <GoalItem 
+              text={item.text} 
+              id={item.key}
+              onDelete={deleteGoalHandler}
+            />
+          )}
+        />
       </View>
     </View>
   );
@@ -21,20 +66,16 @@ export default function App() {
 
 const styles = StyleSheet.create({
   appContainer: {
-    padding: 50,
+    flex: 1,
+    paddingTop: 50,
+    paddingHorizontal: 16,
+    gap: 16,
   },
-  inputContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
+  buttonContainer: {
+    borderRadius: 10,
+    overflow: "hidden",
   },
-  textInput: {
-    borderWidth: 1,
-    borderColor: "#cccccc",
-    width: "80%",
-    marginRight: 8,
-    padding: 8,
-  },
-  button: {
-    width: "20%",
+  goalsContainer: {
+    flex: 5,
   },
 });
