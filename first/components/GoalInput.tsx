@@ -9,12 +9,12 @@ import {
   Platform,
   Keyboard,
   TouchableWithoutFeedback,
-  Pressable,
-  Text,
 } from 'react-native';
 import { useIntl } from 'react-intl';
 import { GoalInputProps } from '../types/goal';
+import { Button } from './shared/Button';
 import goalImage from '../assets/images/goal.png';
+import { colors, spacing, borderRadius } from '../constants/theme';
 
 export function GoalInput({ onAddGoal, visible, onCancel }: GoalInputProps) {
   const [enteredGoal, setEnteredGoal] = useState('');
@@ -57,26 +57,16 @@ export function GoalInput({ onAddGoal, visible, onCancel }: GoalInputProps) {
               accessibilityHint={intl.formatMessage({ id: 'goal.input.hint' })}
             />
             <View style={styles.buttonContainer}>
-              <Pressable
-                style={({ pressed }) => [
-                  styles.button,
-                  styles.cancelButton,
-                  pressed && styles.pressed,
-                ]}
+              <Button
+                title={intl.formatMessage({ id: 'button.cancel' })}
                 onPress={onCancel}
-              >
-                <Text style={styles.buttonText}>{intl.formatMessage({ id: 'button.cancel' })}</Text>
-              </Pressable>
-              <Pressable
-                style={({ pressed }) => [
-                  styles.button,
-                  styles.addButton,
-                  pressed && styles.pressed,
-                ]}
+                variant="secondary"
+              />
+              <Button
+                title={intl.formatMessage({ id: 'button.add' })}
                 onPress={handleAddGoal}
-              >
-                <Text style={styles.buttonText}>{intl.formatMessage({ id: 'button.add' })}</Text>
-              </Pressable>
+                variant="primary"
+              />
             </View>
           </View>
         </KeyboardAvoidingView>
@@ -93,46 +83,26 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 16,
-    backgroundColor: '#311b6b',
+    padding: spacing.lg,
+    backgroundColor: colors.background,
   },
   textInput: {
     borderWidth: 1,
-    borderColor: '#e4d0ff',
-    backgroundColor: '#e4d0ff',
-    color: '#120438',
-    borderRadius: 6,
+    borderColor: colors.inputBackground,
+    backgroundColor: colors.inputBackground,
+    color: colors.inputText,
+    borderRadius: borderRadius.sm,
     width: '100%',
-    padding: 16,
-    marginBottom: 16,
+    padding: spacing.lg,
+    marginBottom: spacing.lg,
   },
   buttonContainer: {
     flexDirection: 'row',
-    gap: 8,
-  },
-  button: {
-    width: 100,
-    padding: 12,
-    borderRadius: 6,
-    alignItems: 'center',
-  },
-  cancelButton: {
-    backgroundColor: '#f31282',
-  },
-  addButton: {
-    backgroundColor: '#5e0acc',
-  },
-  buttonText: {
-    color: 'white',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  pressed: {
-    opacity: 0.7,
+    gap: spacing.sm,
   },
   image: {
     width: 100,
     height: 100,
-    marginBottom: 20,
+    marginBottom: spacing.xl,
   },
 });

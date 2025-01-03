@@ -9,10 +9,11 @@ import {
   Text,
   TouchableWithoutFeedback,
   Keyboard,
-  Pressable,
 } from 'react-native';
 import { useIntl } from 'react-intl';
 import { GoalEditProps } from '../types/goal';
+import { Button } from './shared/Button';
+import { colors, spacing, borderRadius, typography } from '../constants/theme';
 
 export function GoalEdit({ visible, onCancel, onEdit, goalText, goalId }: GoalEditProps) {
   const [editedGoal, setEditedGoal] = useState(goalText);
@@ -49,26 +50,16 @@ export function GoalEdit({ visible, onCancel, onEdit, goalText, goalId }: GoalEd
               accessibilityHint={intl.formatMessage({ id: 'goal.edit.hint' })}
             />
             <View style={styles.buttonContainer}>
-              <Pressable
-                style={({ pressed }) => [
-                  styles.button,
-                  styles.cancelButton,
-                  pressed && styles.pressed,
-                ]}
+              <Button
+                title={intl.formatMessage({ id: 'button.cancel' })}
                 onPress={onCancel}
-              >
-                <Text style={styles.buttonText}>{intl.formatMessage({ id: 'button.cancel' })}</Text>
-              </Pressable>
-              <Pressable
-                style={({ pressed }) => [
-                  styles.button,
-                  styles.saveButton,
-                  pressed && styles.pressed,
-                ]}
+                variant="secondary"
+              />
+              <Button
+                title={intl.formatMessage({ id: 'button.save' })}
                 onPress={handleEdit}
-              >
-                <Text style={styles.buttonText}>{intl.formatMessage({ id: 'button.save' })}</Text>
-              </Pressable>
+                variant="primary"
+              />
             </View>
           </View>
         </KeyboardAvoidingView>
@@ -85,47 +76,27 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 16,
-    backgroundColor: '#311b6b',
+    padding: spacing.lg,
+    backgroundColor: colors.background,
   },
   title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: 'white',
-    marginBottom: 24,
+    fontSize: typography.sizes.title,
+    fontWeight: typography.weights.bold,
+    color: colors.white,
+    marginBottom: spacing.xxl,
   },
   textInput: {
     borderWidth: 1,
-    borderColor: '#e4d0ff',
-    backgroundColor: '#e4d0ff',
-    color: '#120438',
-    borderRadius: 6,
+    borderColor: colors.inputBackground,
+    backgroundColor: colors.inputBackground,
+    color: colors.inputText,
+    borderRadius: borderRadius.sm,
     width: '100%',
-    padding: 16,
-    marginBottom: 16,
+    padding: spacing.lg,
+    marginBottom: spacing.lg,
   },
   buttonContainer: {
     flexDirection: 'row',
-    gap: 8,
-  },
-  button: {
-    width: 100,
-    padding: 12,
-    borderRadius: 6,
-    alignItems: 'center',
-  },
-  cancelButton: {
-    backgroundColor: '#f31282',
-  },
-  saveButton: {
-    backgroundColor: '#5e0acc',
-  },
-  buttonText: {
-    color: 'white',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  pressed: {
-    opacity: 0.7,
+    gap: spacing.sm,
   },
 });

@@ -1,8 +1,10 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { StyleSheet, View, Text, Pressable, Modal, Animated, Dimensions } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { StyleSheet, View, Text, Modal, Animated, Dimensions } from 'react-native';
 import { useIntl } from 'react-intl';
 import { useLanguage } from '../context/LanguageContext';
+import { IconButton } from './shared/IconButton';
+import { Button } from './shared/Button';
+import { colors, spacing, typography } from '../constants/theme';
 
 interface OptionsMenuProps {
   visible: boolean;
@@ -69,36 +71,25 @@ export function OptionsMenu({ visible, onClose }: OptionsMenuProps) {
           ]}
         >
           <View style={styles.header}>
-            <Pressable
-              onPress={handleClose}
-              style={({ pressed }) => [styles.backButton, pressed && styles.pressed]}
-            >
-              <Ionicons name="arrow-back" size={24} color="white" />
-            </Pressable>
+            <IconButton name="arrow-back" size={24} color={colors.white} onPress={handleClose} />
             <Text style={styles.title}>{intl.formatMessage({ id: 'options.title' })}</Text>
           </View>
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>
               {intl.formatMessage({ id: 'options.language' })}
             </Text>
-            <Pressable
-              style={[styles.option, locale === 'en' && styles.selectedOption]}
+            <Button
+              title={intl.formatMessage({ id: 'language.english' })}
               onPress={() => handleLanguageChange('en')}
-            >
-              <Text style={styles.optionText}>
-                {intl.formatMessage({ id: 'language.english' })}
-              </Text>
-              {locale === 'en' && <Ionicons name="checkmark" size={20} color="white" />}
-            </Pressable>
-            <Pressable
-              style={[styles.option, locale === 'tr' && styles.selectedOption]}
+              variant={locale === 'en' ? 'primaryDark' : 'primary'}
+              style={styles.option}
+            />
+            <Button
+              title={intl.formatMessage({ id: 'language.turkish' })}
               onPress={() => handleLanguageChange('tr')}
-            >
-              <Text style={styles.optionText}>
-                {intl.formatMessage({ id: 'language.turkish' })}
-              </Text>
-              {locale === 'tr' && <Ionicons name="checkmark" size={20} color="white" />}
-            </Pressable>
+              variant={locale === 'tr' ? 'primaryDark' : 'primary'}
+              style={styles.option}
+            />
           </View>
         </Animated.View>
       </View>
@@ -109,12 +100,12 @@ export function OptionsMenu({ visible, onClose }: OptionsMenuProps) {
 const styles = StyleSheet.create({
   overlay: {
     flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    backgroundColor: colors.overlay,
   },
   container: {
     flex: 1,
     width: '100%',
-    backgroundColor: '#311b6b',
+    backgroundColor: colors.background,
     position: 'absolute',
     top: 0,
     bottom: 0,
@@ -124,44 +115,24 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 16,
-    gap: 16,
-  },
-  backButton: {
-    padding: 8,
-    borderRadius: 20,
-  },
-  pressed: {
-    opacity: 0.7,
+    padding: spacing.lg,
+    gap: spacing.lg,
   },
   title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: 'white',
+    fontSize: typography.sizes.title,
+    fontWeight: typography.weights.bold,
+    color: colors.white,
     flex: 1,
   },
   section: {
-    padding: 16,
+    padding: spacing.lg,
   },
   sectionTitle: {
-    fontSize: 18,
-    color: 'white',
-    marginBottom: 12,
+    fontSize: typography.sizes.subtitle,
+    color: colors.white,
+    marginBottom: spacing.md,
   },
   option: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    padding: 12,
-    borderRadius: 6,
-    marginBottom: 8,
-    backgroundColor: '#5e0acc',
-  },
-  selectedOption: {
-    backgroundColor: '#4a0599',
-  },
-  optionText: {
-    color: 'white',
-    fontSize: 16,
+    marginBottom: spacing.sm,
   },
 });

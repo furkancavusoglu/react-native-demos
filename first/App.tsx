@@ -1,14 +1,16 @@
 import { useState, useCallback } from 'react';
-import { StyleSheet, View, FlatList, Platform, Pressable, Text } from 'react-native';
+import { StyleSheet, View, FlatList, Platform } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { useIntl } from 'react-intl';
-import { Ionicons } from '@expo/vector-icons';
 import { GoalItem } from './components/GoalItem';
 import { GoalInput } from './components/GoalInput';
 import { GoalEdit } from './components/GoalEdit';
 import { OptionsMenu } from './components/OptionsMenu';
+import { IconButton } from './components/shared/IconButton';
+import { Button } from './components/shared/Button';
 import { Goal } from './types/goal';
 import { LanguageProvider } from './context/LanguageContext';
+import { colors, spacing } from './constants/theme';
 
 function AppContent() {
   const [courseGoals, setCourseGoals] = useState<Goal[]>([]);
@@ -71,20 +73,15 @@ function AppContent() {
       <View style={styles.appContainer}>
         <View style={styles.headerContainer}>
           <View style={styles.cogContainer}>
-            <Pressable
-              onPress={toggleOptions}
-              style={({ pressed }) => [styles.cogButton, pressed && styles.pressed]}
-            >
-              <Ionicons name="settings" size={24} color="#5e0acc" />
-            </Pressable>
+            <IconButton name="settings" onPress={toggleOptions} />
           </View>
-          <Pressable
-            style={({ pressed }) => [styles.addButton, pressed && styles.pressed]}
+          <Button
+            title={intl.formatMessage({ id: 'app.addButton' })}
             onPress={startAddGoalHandler}
-          >
-            <Ionicons name="add-circle" size={24} color="white" style={styles.addIcon} />
-            <Text style={styles.addButtonText}>{intl.formatMessage({ id: 'app.addButton' })}</Text>
-          </Pressable>
+            variant="primaryDark"
+            icon="add-circle"
+            style={styles.addButton}
+          />
         </View>
         <GoalInput
           visible={modalIsVisible}
@@ -132,43 +129,27 @@ const styles = StyleSheet.create({
   appContainer: {
     flex: 1,
     paddingTop: Platform.OS === 'ios' ? 60 : 30,
-    paddingHorizontal: 16,
-    gap: 16,
+    paddingHorizontal: spacing.lg,
+    gap: spacing.lg,
   },
   headerContainer: {
-    gap: 12,
+    gap: spacing.md,
   },
   cogContainer: {
     alignItems: 'flex-end',
   },
-  cogButton: {
-    padding: 8,
-    borderRadius: 20,
-  },
   addButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#4a0599',
-    padding: 16,
-    borderRadius: 12,
-    gap: 8,
-    elevation: 4,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-  },
-  addButtonText: {
-    color: 'white',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  addIcon: {
-    marginRight: 4,
-  },
-  pressed: {
-    opacity: 0.7,
+    ...Platform.select({
+      ios: {
+        shadowColor: colors.black,
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+      },
+      android: {
+        elevation: 4,
+      },
+    }),
   },
   goalsContainer: {
     flex: 5,
