@@ -1,16 +1,20 @@
 import { useState, useCallback } from 'react';
 import { StyleSheet, View, FlatList, Button, Platform } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
+import { useIntl } from 'react-intl';
 import { GoalItem } from './components/GoalItem';
 import { GoalInput } from './components/GoalInput';
 import { GoalEdit } from './components/GoalEdit';
 import { Goal } from './types/goal';
+import { LanguageProvider, useLanguage } from './context/LanguageContext';
 
-export default function App() {
+function AppContent() {
   const [courseGoals, setCourseGoals] = useState<Goal[]>([]);
   const [modalIsVisible, setModalIsVisible] = useState(false);
   const [editModalVisible, setEditModalVisible] = useState(false);
   const [editingGoal, setEditingGoal] = useState<{ id: string; text: string } | null>(null);
+  const intl = useIntl();
+  const { locale, setLocale } = useLanguage();
 
   const startAddGoalHandler = useCallback(() => {
     setModalIsVisible(true);
@@ -55,12 +59,25 @@ export default function App() {
     setCourseGoals(prevGoals => prevGoals.filter(goal => goal.id !== goalId));
   }, []);
 
+  const toggleLanguage = useCallback(() => {
+    setLocale(locale === 'en' ? 'tr' : 'en');
+  }, [locale, setLocale]);
+
   return (
     <>
-      <StatusBar style="dark" />
+      <StatusBar style="light" />
       <View style={styles.appContainer}>
-        <View style={styles.buttonContainer}>
-          <Button title="Add New Goal" onPress={startAddGoalHandler} color="#5e0acc" />
+        <View style={styles.headerContainer}>
+          <Button
+            title={locale === 'en' ? 'Türkçe' : 'English'}
+            onPress={toggleLanguage}
+            color="#311b6b"
+          />
+          <Button
+            title={intl.formatMessage({ id: 'app.addButton' })}
+            onPress={startAddGoalHandler}
+            color="#5e0acc"
+          />
         </View>
         <GoalInput
           visible={modalIsVisible}
@@ -95,6 +112,14 @@ export default function App() {
   );
 }
 
+export default function App() {
+  return (
+    <LanguageProvider>
+      <AppContent />
+    </LanguageProvider>
+  );
+}
+
 const styles = StyleSheet.create({
   appContainer: {
     flex: 1,
@@ -102,9 +127,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     gap: 16,
   },
-  buttonContainer: {
-    borderRadius: 10,
-    overflow: 'hidden',
+  headerContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    gap: 8,
   },
   goalsContainer: {
     flex: 5,

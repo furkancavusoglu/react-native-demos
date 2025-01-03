@@ -1,27 +1,30 @@
 import { memo, useCallback } from 'react';
 import { StyleSheet, View, Text, Pressable, Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { useIntl } from 'react-intl';
 import { GoalItemProps } from '../types/goal';
 
 export const GoalItem = memo(function GoalItem({ text, id, onDelete, onStartEdit }: GoalItemProps) {
+  const intl = useIntl();
+
   const handleDelete = useCallback(() => {
     Alert.alert(
-      'Delete Goal',
-      'Are you sure you want to delete this goal?',
+      intl.formatMessage({ id: 'goal.delete.title' }),
+      intl.formatMessage({ id: 'goal.delete.message' }),
       [
         {
-          text: 'Cancel',
+          text: intl.formatMessage({ id: 'button.cancel' }),
           style: 'cancel',
         },
         {
-          text: 'Delete',
+          text: intl.formatMessage({ id: 'button.delete' }),
           style: 'destructive',
           onPress: () => onDelete(id),
         },
       ],
       { cancelable: true }
     );
-  }, [id, onDelete]);
+  }, [id, onDelete, intl]);
 
   return (
     <View style={styles.goalItem}>
@@ -33,7 +36,7 @@ export const GoalItem = memo(function GoalItem({ text, id, onDelete, onStartEdit
           onPress={() => onStartEdit(id, text)}
           style={({ pressed }) => [styles.iconButton, pressed && styles.pressed]}
           android_ripple={{ color: '#210644' }}
-          accessibilityLabel="Edit goal"
+          accessibilityLabel={intl.formatMessage({ id: 'goal.edit.accessibility' })}
           accessibilityRole="button"
         >
           <Ionicons name="pencil" size={18} color="white" />
@@ -42,7 +45,7 @@ export const GoalItem = memo(function GoalItem({ text, id, onDelete, onStartEdit
           onPress={handleDelete}
           style={({ pressed }) => [styles.iconButton, pressed && styles.pressed]}
           android_ripple={{ color: '#210644' }}
-          accessibilityLabel="Delete goal"
+          accessibilityLabel={intl.formatMessage({ id: 'button.delete' })}
           accessibilityRole="button"
         >
           <Ionicons name="trash" size={18} color="white" />

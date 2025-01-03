@@ -11,11 +11,13 @@ import {
   Keyboard,
   TouchableWithoutFeedback,
 } from 'react-native';
+import { useIntl } from 'react-intl';
 import { GoalInputProps } from '../types/goal';
 import goalImage from '../assets/images/goal.png';
 
 export function GoalInput({ onAddGoal, visible, onCancel }: GoalInputProps) {
   const [enteredGoal, setEnteredGoal] = useState('');
+  const intl = useIntl();
 
   const goalInputHandler = useCallback((enteredText: string) => {
     setEnteredGoal(enteredText);
@@ -41,24 +43,32 @@ export function GoalInput({ onAddGoal, visible, onCancel }: GoalInputProps) {
               source={goalImage}
               style={styles.image}
               resizeMode="contain"
-              accessibilityLabel="Goal image"
+              accessibilityLabel={intl.formatMessage({ id: 'goal.input.accessibility' })}
             />
             <TextInput
-              placeholder="Your goal"
+              placeholder={intl.formatMessage({ id: 'goal.input.placeholder' })}
               style={styles.textInput}
               onChangeText={goalInputHandler}
               value={enteredGoal}
               returnKeyType="done"
               onSubmitEditing={handleAddGoal}
-              accessibilityLabel="Enter your goal"
-              accessibilityHint="Type your goal and press enter or add goal button"
+              accessibilityLabel={intl.formatMessage({ id: 'goal.input.accessibility' })}
+              accessibilityHint={intl.formatMessage({ id: 'goal.input.hint' })}
             />
             <View style={styles.buttonContainer}>
               <View style={styles.button}>
-                <Button title="Cancel" onPress={onCancel} color="#f31282" />
+                <Button
+                  title={intl.formatMessage({ id: 'button.cancel' })}
+                  onPress={onCancel}
+                  color="#f31282"
+                />
               </View>
               <View style={styles.button}>
-                <Button title="Add Goal" onPress={handleAddGoal} color="#5e0acc" />
+                <Button
+                  title={intl.formatMessage({ id: 'button.add' })}
+                  onPress={handleAddGoal}
+                  color="#5e0acc"
+                />
               </View>
             </View>
           </View>
