@@ -14,4 +14,9 @@ export default {
   'button.save': 'Save',
   'button.delete': 'Delete',
   'button.add': 'Add Goal',
+  'button.close': 'Close',
+  'options.title': 'Options',
+  'options.language': 'Language',
+  'language.english': 'English',
+  'language.turkish': 'Turkish',
 } as const;

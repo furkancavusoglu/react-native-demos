@@ -3,13 +3,14 @@ import {
   StyleSheet,
   View,
   TextInput,
-  Button,
   Modal,
   Image,
   KeyboardAvoidingView,
   Platform,
   Keyboard,
   TouchableWithoutFeedback,
+  Pressable,
+  Text,
 } from 'react-native';
 import { useIntl } from 'react-intl';
 import { GoalInputProps } from '../types/goal';
@@ -56,20 +57,26 @@ export function GoalInput({ onAddGoal, visible, onCancel }: GoalInputProps) {
               accessibilityHint={intl.formatMessage({ id: 'goal.input.hint' })}
             />
             <View style={styles.buttonContainer}>
-              <View style={styles.button}>
-                <Button
-                  title={intl.formatMessage({ id: 'button.cancel' })}
-                  onPress={onCancel}
-                  color="#f31282"
-                />
-              </View>
-              <View style={styles.button}>
-                <Button
-                  title={intl.formatMessage({ id: 'button.add' })}
-                  onPress={handleAddGoal}
-                  color="#5e0acc"
-                />
-              </View>
+              <Pressable
+                style={({ pressed }) => [
+                  styles.button,
+                  styles.cancelButton,
+                  pressed && styles.pressed,
+                ]}
+                onPress={onCancel}
+              >
+                <Text style={styles.buttonText}>{intl.formatMessage({ id: 'button.cancel' })}</Text>
+              </Pressable>
+              <Pressable
+                style={({ pressed }) => [
+                  styles.button,
+                  styles.addButton,
+                  pressed && styles.pressed,
+                ]}
+                onPress={handleAddGoal}
+              >
+                <Text style={styles.buttonText}>{intl.formatMessage({ id: 'button.add' })}</Text>
+              </Pressable>
             </View>
           </View>
         </KeyboardAvoidingView>
@@ -105,6 +112,23 @@ const styles = StyleSheet.create({
   },
   button: {
     width: 100,
+    padding: 12,
+    borderRadius: 6,
+    alignItems: 'center',
+  },
+  cancelButton: {
+    backgroundColor: '#f31282',
+  },
+  addButton: {
+    backgroundColor: '#5e0acc',
+  },
+  buttonText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  pressed: {
+    opacity: 0.7,
   },
   image: {
     width: 100,

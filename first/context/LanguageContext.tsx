@@ -21,7 +21,7 @@ const LanguageContext = createContext<LanguageContextType>({
 const messages: Record<Language, Messages> = {
   en,
   tr,
-};
+} as const;
 
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
   const [locale, setLocale] = useState<Language>('en');

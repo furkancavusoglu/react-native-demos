@@ -3,13 +3,13 @@ import {
   StyleSheet,
   View,
   TextInput,
-  Button,
   Modal,
   KeyboardAvoidingView,
   Platform,
   Text,
   TouchableWithoutFeedback,
   Keyboard,
+  Pressable,
 } from 'react-native';
 import { useIntl } from 'react-intl';
 import { GoalEditProps } from '../types/goal';
@@ -49,20 +49,26 @@ export function GoalEdit({ visible, onCancel, onEdit, goalText, goalId }: GoalEd
               accessibilityHint={intl.formatMessage({ id: 'goal.edit.hint' })}
             />
             <View style={styles.buttonContainer}>
-              <View style={styles.button}>
-                <Button
-                  title={intl.formatMessage({ id: 'button.cancel' })}
-                  onPress={onCancel}
-                  color="#f31282"
-                />
-              </View>
-              <View style={styles.button}>
-                <Button
-                  title={intl.formatMessage({ id: 'button.save' })}
-                  onPress={handleEdit}
-                  color="#5e0acc"
-                />
-              </View>
+              <Pressable
+                style={({ pressed }) => [
+                  styles.button,
+                  styles.cancelButton,
+                  pressed && styles.pressed,
+                ]}
+                onPress={onCancel}
+              >
+                <Text style={styles.buttonText}>{intl.formatMessage({ id: 'button.cancel' })}</Text>
+              </Pressable>
+              <Pressable
+                style={({ pressed }) => [
+                  styles.button,
+                  styles.saveButton,
+                  pressed && styles.pressed,
+                ]}
+                onPress={handleEdit}
+              >
+                <Text style={styles.buttonText}>{intl.formatMessage({ id: 'button.save' })}</Text>
+              </Pressable>
             </View>
           </View>
         </KeyboardAvoidingView>
@@ -104,5 +110,22 @@ const styles = StyleSheet.create({
   },
   button: {
     width: 100,
+    padding: 12,
+    borderRadius: 6,
+    alignItems: 'center',
+  },
+  cancelButton: {
+    backgroundColor: '#f31282',
+  },
+  saveButton: {
+    backgroundColor: '#5e0acc',
+  },
+  buttonText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  pressed: {
+    opacity: 0.7,
   },
 });

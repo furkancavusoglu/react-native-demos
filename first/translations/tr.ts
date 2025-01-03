@@ -14,4 +14,9 @@ export default {
   'button.save': 'Kaydet',
   'button.delete': 'Sil',
   'button.add': 'Hedef Ekle',
+  'button.close': 'Kapat',
+  'options.title': 'Ayarlar',
+  'options.language': 'Dil',
+  'language.english': 'İngilizce',
+  'language.turkish': 'Türkçe',
 } as const;
