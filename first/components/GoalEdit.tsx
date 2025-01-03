@@ -3,18 +3,20 @@ import {
   StyleSheet,
   View,
   TextInput,
-  Button,
   Modal,
   KeyboardAvoidingView,
   Platform,
   Text,
   TouchableWithoutFeedback,
   Keyboard,
+  Pressable,
 } from 'react-native';
+import { useIntl } from 'react-intl';
 import { GoalEditProps } from '../types/goal';
 
 export function GoalEdit({ visible, onCancel, onEdit, goalText, goalId }: GoalEditProps) {
   const [editedGoal, setEditedGoal] = useState(goalText);
+  const intl = useIntl();
 
   const goalInputHandler = useCallback((enteredText: string) => {
     setEditedGoal(enteredText);
@@ -35,24 +37,38 @@ export function GoalEdit({ visible, onCancel, onEdit, goalText, goalId }: GoalEd
           style={styles.screen}
         >
           <View style={styles.inputContainer}>
-            <Text style={styles.title}>Edit Goal</Text>
+            <Text style={styles.title}>{intl.formatMessage({ id: 'goal.edit.title' })}</Text>
             <TextInput
-              placeholder="Edit your goal"
+              placeholder={intl.formatMessage({ id: 'goal.edit.placeholder' })}
               style={styles.textInput}
               onChangeText={goalInputHandler}
               value={editedGoal}
               returnKeyType="done"
               onSubmitEditing={handleEdit}
-              accessibilityLabel="Edit your goal"
-              accessibilityHint="Edit your goal text and press save to update"
+              accessibilityLabel={intl.formatMessage({ id: 'goal.edit.accessibility' })}
+              accessibilityHint={intl.formatMessage({ id: 'goal.edit.hint' })}
             />
             <View style={styles.buttonContainer}>
-              <View style={styles.button}>
-                <Button title="Cancel" onPress={onCancel} color="#f31282" />
-              </View>
-              <View style={styles.button}>
-                <Button title="Save" onPress={handleEdit} color="#5e0acc" />
-              </View>
+              <Pressable
+                style={({ pressed }) => [
+                  styles.button,
+                  styles.cancelButton,
+                  pressed && styles.pressed,
+                ]}
+                onPress={onCancel}
+              >
+                <Text style={styles.buttonText}>{intl.formatMessage({ id: 'button.cancel' })}</Text>
+              </Pressable>
+              <Pressable
+                style={({ pressed }) => [
+                  styles.button,
+                  styles.saveButton,
+                  pressed && styles.pressed,
+                ]}
+                onPress={handleEdit}
+              >
+                <Text style={styles.buttonText}>{intl.formatMessage({ id: 'button.save' })}</Text>
+              </Pressable>
             </View>
           </View>
         </KeyboardAvoidingView>
@@ -94,5 +110,22 @@ const styles = StyleSheet.create({
   },
   button: {
     width: 100,
+    padding: 12,
+    borderRadius: 6,
+    alignItems: 'center',
+  },
+  cancelButton: {
+    backgroundColor: '#f31282',
+  },
+  saveButton: {
+    backgroundColor: '#5e0acc',
+  },
+  buttonText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  pressed: {
+    opacity: 0.7,
   },
 });
