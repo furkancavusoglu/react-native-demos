@@ -5,29 +5,27 @@ import {
   TextInput,
   Button,
   Modal,
-  Image,
   KeyboardAvoidingView,
   Platform,
-  Keyboard,
+  Text,
   TouchableWithoutFeedback,
+  Keyboard,
 } from 'react-native';
-import { GoalInputProps } from '../types/goal';
-import goalImage from '../assets/images/goal.png';
+import { GoalEditProps } from '../types/goal';
 
-export function GoalInput({ onAddGoal, visible, onCancel }: GoalInputProps) {
-  const [enteredGoal, setEnteredGoal] = useState('');
+export function GoalEdit({ visible, onCancel, onEdit, goalText, goalId }: GoalEditProps) {
+  const [editedGoal, setEditedGoal] = useState(goalText);
 
   const goalInputHandler = useCallback((enteredText: string) => {
-    setEnteredGoal(enteredText);
+    setEditedGoal(enteredText);
   }, []);
 
-  const handleAddGoal = useCallback(() => {
-    if (enteredGoal.trim().length === 0) {
+  const handleEdit = useCallback(() => {
+    if (editedGoal.trim().length === 0) {
       return;
     }
-    onAddGoal(enteredGoal);
-    setEnteredGoal('');
-  }, [enteredGoal, onAddGoal]);
+    onEdit(goalId, editedGoal.trim());
+  }, [editedGoal, goalId, onEdit]);
 
   return (
     <Modal visible={visible} animationType="slide">
@@ -37,28 +35,23 @@ export function GoalInput({ onAddGoal, visible, onCancel }: GoalInputProps) {
           style={styles.screen}
         >
           <View style={styles.inputContainer}>
-            <Image
-              source={goalImage}
-              style={styles.image}
-              resizeMode="contain"
-              accessibilityLabel="Goal image"
-            />
+            <Text style={styles.title}>Edit Goal</Text>
             <TextInput
-              placeholder="Your goal"
+              placeholder="Edit your goal"
               style={styles.textInput}
               onChangeText={goalInputHandler}
-              value={enteredGoal}
+              value={editedGoal}
               returnKeyType="done"
-              onSubmitEditing={handleAddGoal}
-              accessibilityLabel="Enter your goal"
-              accessibilityHint="Type your goal and press enter or add goal button"
+              onSubmitEditing={handleEdit}
+              accessibilityLabel="Edit your goal"
+              accessibilityHint="Edit your goal text and press save to update"
             />
             <View style={styles.buttonContainer}>
               <View style={styles.button}>
                 <Button title="Cancel" onPress={onCancel} color="#f31282" />
               </View>
               <View style={styles.button}>
-                <Button title="Add Goal" onPress={handleAddGoal} color="#5e0acc" />
+                <Button title="Save" onPress={handleEdit} color="#5e0acc" />
               </View>
             </View>
           </View>
@@ -79,6 +72,12 @@ const styles = StyleSheet.create({
     padding: 16,
     backgroundColor: '#311b6b',
   },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: 'white',
+    marginBottom: 24,
+  },
   textInput: {
     borderWidth: 1,
     borderColor: '#e4d0ff',
@@ -95,10 +94,5 @@ const styles = StyleSheet.create({
   },
   button: {
     width: 100,
-  },
-  image: {
-    width: 100,
-    height: 100,
-    marginBottom: 20,
   },
 });
