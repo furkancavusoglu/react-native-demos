@@ -25,8 +25,8 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   innerContainer: {
-    paddingVertical: 10,
-    paddingHorizontal: 24,
+    paddingVertical: 8,
+    paddingHorizontal: 20,
     backgroundColor: '#72063c',
     elevation: 4,
   },
