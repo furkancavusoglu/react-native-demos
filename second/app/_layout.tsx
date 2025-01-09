@@ -1,32 +1,27 @@
 import { Stack } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
-import { ImageBackground, SafeAreaView, StyleSheet } from 'react-native';
-import { useFonts } from 'expo-font';
+import { ImageBackground, SafeAreaView, StyleSheet, View, ActivityIndicator } from 'react-native';
 import * as SplashScreen from 'expo-splash-screen';
-import { useCallback } from 'react';
+import { useFonts } from '../src/hooks/useFonts';
+import { theme } from '../src/theme';
 
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
-  const [fontsLoaded] = useFonts({
-    'open-sans': require('../assets/fonts/OpenSans-Regular.ttf'),
-    'open-sans-bold': require('../assets/fonts/OpenSans-Bold.ttf'),
-  });
-
-  const onLayoutRootView = useCallback(async () => {
-    if (fontsLoaded) {
-      await SplashScreen.hideAsync();
-    }
-  }, [fontsLoaded]);
+  const { fontsLoaded, onLayoutRootView } = useFonts();
 
   if (!fontsLoaded) {
-    return null;
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color={theme.colors.primary[800]} />
+      </View>
+    );
   }
 
   return (
     <LinearGradient
       style={styles.container}
-      colors={['#4e0329', '#ddb52f']}
+      colors={[theme.colors.primary[900], theme.colors.accent[400]]}
       onLayout={onLayoutRootView}
     >
       <ImageBackground
@@ -39,7 +34,7 @@ export default function RootLayout() {
           <Stack
             screenOptions={{
               headerShown: false,
-              contentStyle: { backgroundColor: 'transparent' },
+              contentStyle: { backgroundColor: theme.colors.transparent },
               gestureEnabled: false,
             }}
           >
@@ -77,6 +72,11 @@ export default function RootLayout() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   backgroundImage: {
     opacity: 0.15,

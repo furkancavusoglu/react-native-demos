@@ -1,11 +1,12 @@
 import { View, TextInput, StyleSheet, Alert } from 'react-native';
-import Button from '../components/ui/Button';
-import { useState } from 'react';
-import { Colors } from '../constants/colors';
-import Title from '../components/ui/Title';
-import Card from '../components/ui/Card';
-import InstructionText from '../components/ui/InstructionText';
 import { router } from 'expo-router';
+import Button from '../src/components/ui/Button';
+import Title from '../src/components/ui/Title';
+import Card from '../src/components/ui/Card';
+import InstructionText from '../src/components/ui/InstructionText';
+import { theme } from '../src/theme';
+import { isValidGameNumber } from '../src/utils/game';
+import { useState } from 'react';
 
 export default function StartGameScreen() {
   const [enteredNumber, setEnteredNumber] = useState('');
@@ -20,7 +21,7 @@ export default function StartGameScreen() {
 
   const confirmInputHandler = () => {
     const chosenNumber = parseInt(enteredNumber);
-    if (isNaN(chosenNumber) || chosenNumber <= 0 || chosenNumber > 99) {
+    if (!isValidGameNumber(chosenNumber)) {
       Alert.alert('Invalid number!', 'Number has to be between 1 and 99.', [
         { text: 'Okay', style: 'destructive', onPress: resetInputHandler },
       ]);
@@ -60,26 +61,26 @@ export default function StartGameScreen() {
 const styles = StyleSheet.create({
   rootContainer: {
     flex: 1,
-    paddingTop: 100,
+    paddingTop: theme.spacing.xxl * 2,
     alignItems: 'center',
-    gap: 36,
+    gap: theme.spacing.xl,
   },
   inputContainer: {
-    gap: 16,
+    gap: theme.spacing.md,
   },
   numberInput: {
     height: 70,
     width: 70,
-    fontSize: 32,
-    borderBottomColor: Colors.accent500,
+    fontSize: theme.typography.sizes.xxl,
+    borderBottomColor: theme.colors.accent[400],
     borderBottomWidth: 2,
-    color: Colors.accent500,
-    fontWeight: 'bold',
+    color: theme.colors.accent[400],
+    fontFamily: theme.typography.fonts.bold,
     textAlign: 'center',
   },
   buttonsContainer: {
     flexDirection: 'row',
-    gap: 10,
+    gap: theme.spacing.sm,
   },
   buttonContainer: {
     flex: 1,

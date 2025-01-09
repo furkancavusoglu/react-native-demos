@@ -1,11 +1,16 @@
 import { View, Text, StyleSheet, Image } from 'react-native';
-import Button from '../components/ui/Button';
-import Card from '../components/ui/Card';
-import { Colors } from '../constants/colors';
 import { router, useLocalSearchParams } from 'expo-router';
+import Button from '../src/components/ui/Button';
+import Card from '../src/components/ui/Card';
+import { theme } from '../src/theme';
+
+type Params = {
+  rounds: string;
+  number: string;
+};
 
 export default function GameOverScreen() {
-  const { rounds, number } = useLocalSearchParams<{ rounds: string; number: string }>();
+  const { rounds, number } = useLocalSearchParams<Params>();
   const guessRounds = parseInt(rounds);
   const userNumber = parseInt(number);
 
@@ -18,7 +23,9 @@ export default function GameOverScreen() {
           Your phone needed <Text style={styles.highlight}>{guessRounds}</Text> rounds to guess the
           number <Text style={styles.highlight}>{userNumber}</Text>.
         </Text>
-        <Button onPress={() => router.replace('/')}>Start New Game</Button>
+        <View style={styles.buttonContainer}>
+          <Button onPress={() => router.replace('/')}>Start New Game</Button>
+        </View>
       </Card>
     </View>
   );
@@ -28,30 +35,35 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
+    padding: theme.spacing.lg,
+  },
+  card: {
+    gap: theme.spacing.lg,
+    alignItems: 'center',
+    padding: theme.spacing.xl,
   },
   title: {
-    fontFamily: 'open-sans-bold',
-    fontSize: 24,
-    color: Colors.accent500,
-    marginBottom: 16,
+    fontFamily: theme.typography.fonts.bold,
+    fontSize: theme.typography.sizes.xl,
+    color: theme.colors.accent[400],
+    marginBottom: theme.spacing.md,
   },
   image: {
     width: 300,
     height: 300,
-    borderRadius: 150,
-  },
-  card: {
-    gap: 20,
-    alignItems: 'center',
+    borderRadius: theme.borderRadius.full,
   },
   summaryText: {
-    fontFamily: 'open-sans',
-    fontSize: 24,
+    fontFamily: theme.typography.fonts.regular,
+    fontSize: theme.typography.sizes.lg,
     textAlign: 'center',
-    color: Colors.accent500,
+    color: theme.colors.accent[400],
   },
   highlight: {
-    fontFamily: 'open-sans-bold',
-    color: Colors.primary500,
+    fontFamily: theme.typography.fonts.bold,
+    color: theme.colors.primary[500],
+  },
+  buttonContainer: {
+    marginTop: theme.spacing.md,
   },
 });
