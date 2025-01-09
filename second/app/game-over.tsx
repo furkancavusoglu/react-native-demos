@@ -2,20 +2,13 @@ import { View, Text, StyleSheet, Image } from 'react-native';
 import Button from '../components/ui/Button';
 import Card from '../components/ui/Card';
 import { Colors } from '../constants/colors';
+import { router, useLocalSearchParams } from 'expo-router';
 
-interface GameOverScreenProps {
-  setGameIsOver: (value: boolean) => void;
-  setUserNumber: (value: number | null) => void;
-  guessRounds: number;
-  userNumber: number;
-}
+export default function GameOverScreen() {
+  const { rounds, number } = useLocalSearchParams<{ rounds: string; number: string }>();
+  const guessRounds = parseInt(rounds);
+  const userNumber = parseInt(number);
 
-export default function GameOverScreen({
-  setGameIsOver,
-  setUserNumber,
-  guessRounds,
-  userNumber,
-}: GameOverScreenProps) {
   return (
     <View style={styles.container}>
       <Card style={styles.card}>
@@ -25,14 +18,7 @@ export default function GameOverScreen({
           Your phone needed <Text style={styles.highlight}>{guessRounds}</Text> rounds to guess the
           number <Text style={styles.highlight}>{userNumber}</Text>.
         </Text>
-        <Button
-          onPress={() => {
-            setGameIsOver(false);
-            setUserNumber(null);
-          }}
-        >
-          Start New Game
-        </Button>
+        <Button onPress={() => router.replace('/')}>Start New Game</Button>
       </Card>
     </View>
   );

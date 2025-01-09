@@ -7,6 +7,7 @@ import Card from '../components/ui/Card';
 import InstructionText from '../components/ui/InstructionText';
 import { Ionicons } from '@expo/vector-icons';
 import { Colors } from '../constants/colors';
+import { router, useLocalSearchParams } from 'expo-router';
 
 function generateRandomBetween(min: number, max: number, exclude: number): number {
   const rndNum = Math.floor(Math.random() * (max - min)) + min;
@@ -21,15 +22,10 @@ function generateRandomBetween(min: number, max: number, exclude: number): numbe
 let minBoundary = 1;
 let maxBoundary = 100;
 
-export default function GameScreen({
-  userNumber,
-  onGameOver,
-  onGuessRound,
-}: {
-  userNumber: number;
-  onGameOver: () => void;
-  onGuessRound: (rounds: number) => void;
-}) {
+export default function GameScreen() {
+  const { number } = useLocalSearchParams<{ number: string }>();
+  const userNumber = parseInt(number);
+
   const initialGuess = generateRandomBetween(1, 100, userNumber);
   const [currentGuess, setCurrentGuess] = useState(initialGuess);
   const [guessRounds, setGuessRounds] = useState<number[]>([initialGuess]);
@@ -41,12 +37,12 @@ export default function GameScreen({
 
   useEffect(() => {
     if (currentGuess === userNumber) {
-      onGuessRound(guessRounds.length);
-      Alert.alert('Game over!', 'You guessed the number!', [
-        { text: 'Close', style: 'cancel', onPress: onGameOver },
-      ]);
+      router.push({
+        pathname: '/game-over',
+        params: { rounds: guessRounds.length, number: userNumber },
+      });
     }
-  }, [currentGuess, userNumber, onGameOver, onGuessRound, guessRounds.length]);
+  }, [currentGuess, userNumber, guessRounds.length]);
 
   const nextGuessHandler = (direction: 'lower' | 'higher') => {
     if (
@@ -67,7 +63,7 @@ export default function GameScreen({
 
     if (minBoundary > maxBoundary) {
       Alert.alert('Invalid Range', 'The range is invalid. Please restart the game.', [
-        { text: 'Restart', onPress: onGameOver },
+        { text: 'Restart', onPress: () => router.replace('/') },
       ]);
       return;
     }

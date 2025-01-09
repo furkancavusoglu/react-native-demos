@@ -5,12 +5,9 @@ import { Colors } from '../constants/colors';
 import Title from '../components/ui/Title';
 import Card from '../components/ui/Card';
 import InstructionText from '../components/ui/InstructionText';
+import { router } from 'expo-router';
 
-interface StartGameScreenProps {
-  onPickNumber: (number: number) => void;
-}
-
-export default function StartGameScreen({ onPickNumber }: StartGameScreenProps) {
+export default function StartGameScreen() {
   const [enteredNumber, setEnteredNumber] = useState('');
 
   const numberInputHandler = (input: string) => {
@@ -29,7 +26,7 @@ export default function StartGameScreen({ onPickNumber }: StartGameScreenProps) 
       ]);
       return;
     }
-    onPickNumber(chosenNumber);
+    router.push({ pathname: '/game', params: { number: chosenNumber } });
     setEnteredNumber('');
   };
 
