@@ -40,8 +40,34 @@ export default function RootLayout() {
             screenOptions={{
               headerShown: false,
               contentStyle: { backgroundColor: 'transparent' },
+              gestureEnabled: false,
             }}
-          />
+          >
+            <Stack.Screen
+              name="index"
+              options={{
+                headerShown: false,
+                gestureEnabled: false,
+              }}
+            />
+            <Stack.Screen
+              name="game"
+              options={{
+                headerShown: true,
+                headerTransparent: true,
+                headerTitle: '',
+                headerBackVisible: true,
+                gestureEnabled: true,
+              }}
+            />
+            <Stack.Screen
+              name="game-over"
+              options={{
+                headerShown: false,
+                gestureEnabled: false,
+              }}
+            />
+          </Stack>
         </SafeAreaView>
       </ImageBackground>
     </LinearGradient>

@@ -7,7 +7,7 @@ import Card from '../components/ui/Card';
 import InstructionText from '../components/ui/InstructionText';
 import { Ionicons } from '@expo/vector-icons';
 import { Colors } from '../constants/colors';
-import { router, useLocalSearchParams } from 'expo-router';
+import { router, useLocalSearchParams, useNavigation } from 'expo-router';
 
 function generateRandomBetween(min: number, max: number, exclude: number): number {
   const rndNum = Math.floor(Math.random() * (max - min)) + min;
@@ -24,6 +24,7 @@ let maxBoundary = 100;
 
 export default function GameScreen() {
   const { number } = useLocalSearchParams<{ number: string }>();
+  const navigation = useNavigation();
   const userNumber = parseInt(number);
 
   const initialGuess = generateRandomBetween(1, 100, userNumber);
@@ -37,12 +38,13 @@ export default function GameScreen() {
 
   useEffect(() => {
     if (currentGuess === userNumber) {
-      router.push({
+      navigation.setOptions({ headerBackVisible: false, gestureEnabled: false });
+      router.replace({
         pathname: '/game-over',
         params: { rounds: guessRounds.length, number: userNumber },
       });
     }
-  }, [currentGuess, userNumber, guessRounds.length]);
+  }, [currentGuess, userNumber, guessRounds.length, navigation]);
 
   const nextGuessHandler = (direction: 'lower' | 'higher') => {
     if (
