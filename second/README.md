@@ -84,28 +84,28 @@ A React Native mobile game where players pick a number and the app tries to gues
 
 ## Project Structure
 
-```
+```typescript
 second/
-├── app/ # Expo Router pages
-│ ├── \_layout.tsx # Root layout with global UI structure
-│ ├── index.tsx # Home/Start game screen
-│ ├── game.tsx # Main game screen
-│ └── game-over.tsx # Game over screen
+├── app/                    # Expo Router pages
+│   ├── _layout.tsx        # Root layout with global UI structure
+│   ├── index.tsx          # Home/Start game screen
+│   ├── game.tsx           # Main game screen
+│   └── game-over.tsx      # Game over screen
 ├── src/
-│ ├── components/ # Reusable components
-│ │ ├── game/ # Game-specific components
-│ │ └── ui/ # Common UI components
-│ ├── store/ # Zustand store
-│ │ └── game.ts # Game state management
-│ ├── types/ # TypeScript types
-│ │ └── game.ts # Game-related types
-│ ├── utils/ # Utility functions
-│ │ └── game.ts # Game logic utilities
-│ └── theme/ # Theme configuration
+│   ├── components/        # Reusable components
+│   │   ├── game/         # Game-specific components
+│   │   └── ui/           # Common UI components
+│   ├── store/            # Zustand store
+│   │   └── game.ts       # Game state management
+│   ├── types/            # TypeScript types
+│   │   └── game.ts       # Game-related types
+│   ├── utils/            # Utility functions
+│   │   └── game.ts       # Game logic utilities
+│   └── theme/            # Theme configuration
 ├── assets/
-│ ├── fonts/ # Custom fonts
-│ └── images/ # Game images
-└── package.json # Project dependencies
+│   ├── fonts/            # Custom fonts
+│   └── images/           # Game images
+└── package.json          # Project dependencies
 ```
 
 ## State Management (Zustand)
