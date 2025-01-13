@@ -1,6 +1,6 @@
 # Number Guessing Game
 
-A React Native mobile game where players pick a number and the app tries to guess it through a series of higher/lower interactions. Built with Expo and TypeScript for a polished, type-safe gaming experience.
+A React Native mobile game where players pick a number and the app tries to guess it through a series of higher/lower interactions. Built with Expo, TypeScript, and Zustand for a polished, type-safe gaming experience.
 
 ## Features
 
@@ -11,6 +11,20 @@ A React Native mobile game where players pick a number and the app tries to gues
 - **Interactive Gameplay**: Players guide the app by indicating if the guess is too high or low
 - **Guess History**: Real-time log of all guesses made during the game
 - **Game Over Summary**: Displays total rounds taken to guess the correct number
+
+### State Management
+
+- **Zustand Store**: Efficient and simple state management
+  - Centralized game state
+  - Type-safe actions and state updates
+  - Optimized re-rendering
+  - Clear separation of concerns
+- **Game State Features**:
+  - Current guess tracking
+  - Guess history with unique IDs
+  - Dynamic boundary management
+  - Game over detection
+  - Type-safe actions and results
 
 ### UI/UX Features
 
@@ -23,13 +37,13 @@ A React Native mobile game where players pick a number and the app tries to gues
 
 ### Technical Features
 
-- **Type Safety**: Full TypeScript implementation
+- **Type Safety**: Full TypeScript implementation with strict types
 - **URL-Based Routing**: Modern navigation using Expo Router
 - **Deep Linking Support**: URL-based navigation and state management
 - **Font Loading**: Efficient custom font handling with expo-font
 - **Splash Screen**: Professional loading experience
 - **Component Reusability**: Modular UI components
-- **State Management**: Efficient React state and effect hooks
+- **State Management**: Zustand for efficient state handling
 
 ## Technologies Used
 
@@ -38,6 +52,7 @@ A React Native mobile game where players pick a number and the app tries to gues
 - **React Native**: ^0.76.5
 - **Expo**: ~52.0.23
 - **TypeScript**: ^5.3.3
+- **Zustand**: ^5.0.3
 
 ### Navigation & Routing
 
@@ -75,15 +90,39 @@ second/
 │ ├── index.tsx # Home/Start game screen
 │ ├── game.tsx # Main game screen
 │ └── game-over.tsx # Game over screen
-├── components/
-│ ├── game/ # Game-specific components
-│ └── ui/ # Reusable UI components
+├── src/
+│ ├── components/ # Reusable components
+│ │ ├── game/ # Game-specific components
+│ │ └── ui/ # Common UI components
+│ ├── store/ # Zustand store
+│ │ └── game.ts # Game state management
+│ ├── types/ # TypeScript types
+│ │ └── game.ts # Game-related types
+│ ├── utils/ # Utility functions
+│ │ └── game.ts # Game logic utilities
+│ └── theme/ # Theme configuration
 ├── assets/
 │ ├── fonts/ # Custom fonts
 │ └── images/ # Game images
-├── constants/
-│ └── colors.ts # Global color definitions
 └── package.json # Project dependencies
+
+## State Management (Zustand)
+
+The game uses Zustand for state management with the following structure:
+
+### Game State
+
+- `currentGuess`: Current number being guessed
+- `guessRounds`: History of all guesses with unique IDs
+- `userNumber`: Player's chosen number
+- `isGameOver`: Game completion status
+- `boundaries`: Min and max range for guesses
+
+### Actions
+
+- `initializeGame`: Starts a new game with the player's number
+- `makeGuess`: Handles the next guess based on player's input
+- `resetGame`: Resets the game state
 
 ## Getting Started
 
@@ -104,7 +143,6 @@ second/
 
    # Install dependencies
    npm install
-
    ```
 
 3. **Running the App**

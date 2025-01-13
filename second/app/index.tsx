@@ -7,9 +7,11 @@ import InstructionText from '../src/components/ui/InstructionText';
 import { theme } from '../src/theme';
 import { isValidGameNumber } from '../src/utils/game';
 import { useState } from 'react';
+import { useGameStore } from '../src/store/game';
 
 export default function StartGameScreen() {
   const [enteredNumber, setEnteredNumber] = useState('');
+  const resetGame = useGameStore(state => state.resetGame);
 
   const numberInputHandler = (input: string) => {
     setEnteredNumber(input);
@@ -27,6 +29,7 @@ export default function StartGameScreen() {
       ]);
       return;
     }
+    resetGame();
     router.push({ pathname: '/game', params: { number: chosenNumber } });
     setEnteredNumber('');
   };

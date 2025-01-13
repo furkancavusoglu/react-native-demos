@@ -3,6 +3,7 @@ import { router, useLocalSearchParams } from 'expo-router';
 import Button from '../src/components/ui/Button';
 import Card from '../src/components/ui/Card';
 import { theme } from '../src/theme';
+import { useGameStore } from '../src/store/game';
 
 type Params = {
   rounds: string;
@@ -13,6 +14,12 @@ export default function GameOverScreen() {
   const { rounds, number } = useLocalSearchParams<Params>();
   const guessRounds = parseInt(rounds);
   const userNumber = parseInt(number);
+  const resetGame = useGameStore(state => state.resetGame);
+
+  const startNewGame = () => {
+    resetGame();
+    router.replace('/');
+  };
 
   return (
     <View style={styles.container}>
@@ -24,7 +31,7 @@ export default function GameOverScreen() {
           number <Text style={styles.highlight}>{userNumber}</Text>.
         </Text>
         <View style={styles.buttonContainer}>
-          <Button onPress={() => router.replace('/')}>Start New Game</Button>
+          <Button onPress={startNewGame}>Start New Game</Button>
         </View>
       </Card>
     </View>
