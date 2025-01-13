@@ -84,6 +84,7 @@ A React Native mobile game where players pick a number and the app tries to gues
 
 ## Project Structure
 
+```
 second/
 ├── app/ # Expo Router pages
 │ ├── \_layout.tsx # Root layout with global UI structure
@@ -105,6 +106,7 @@ second/
 │ ├── fonts/ # Custom fonts
 │ └── images/ # Game images
 └── package.json # Project dependencies
+```
 
 ## State Management (Zustand)
 
