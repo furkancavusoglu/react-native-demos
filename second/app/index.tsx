@@ -8,10 +8,13 @@ import { theme } from '../src/theme';
 import { isValidGameNumber } from '../src/utils/game';
 import { useState } from 'react';
 import { useGameStore } from '../src/store/game';
+import { useResponsive } from '../src/hooks/useResponsive';
 
 export default function StartGameScreen() {
   const [enteredNumber, setEnteredNumber] = useState('');
   const resetGame = useGameStore(state => state.resetGame);
+  const { width, height, moderateScale } = useResponsive();
+  const isLandscape = width > height;
 
   const numberInputHandler = (input: string) => {
     setEnteredNumber(input);
@@ -34,13 +37,55 @@ export default function StartGameScreen() {
     setEnteredNumber('');
   };
 
+  const dynamicStyles = StyleSheet.create({
+    rootContainer: {
+      flex: 1,
+      paddingTop: isLandscape
+        ? moderateScale(theme.spacing.sm)
+        : moderateScale(theme.spacing.xxl * 2),
+      alignItems: 'center',
+      gap: isLandscape ? moderateScale(theme.spacing.sm) : moderateScale(theme.spacing.xl),
+    },
+    inputContainer: {
+      gap: isLandscape ? moderateScale(theme.spacing.sm) : moderateScale(theme.spacing.md),
+      padding: isLandscape ? moderateScale(theme.spacing.sm) : moderateScale(theme.spacing.lg),
+    },
+    numberInput: {
+      height: isLandscape ? moderateScale(40) : moderateScale(70),
+      width: isLandscape ? moderateScale(40) : moderateScale(70),
+      fontSize: isLandscape
+        ? moderateScale(theme.typography.sizes.xl)
+        : moderateScale(theme.typography.sizes.xxl),
+      borderBottomColor: theme.colors.accent[400],
+      borderBottomWidth: 2,
+      color: theme.colors.accent[400],
+      fontFamily: theme.typography.fonts.bold,
+      textAlign: 'center',
+    },
+    buttonsContainer: {
+      flexDirection: 'row',
+      gap: moderateScale(theme.spacing.sm),
+      maxWidth: isLandscape ? moderateScale(250) : undefined,
+    },
+    buttonContainer: {
+      flex: 1,
+    },
+  });
+
   return (
-    <View style={styles.rootContainer}>
-      <Title title="Guess The Number" />
-      <Card style={styles.inputContainer}>
-        <InstructionText>Enter a number</InstructionText>
+    <View style={dynamicStyles.rootContainer}>
+      <Title
+        title="Guess The Number"
+        style={isLandscape && { fontSize: moderateScale(theme.typography.sizes.lg) }}
+      />
+      <Card style={dynamicStyles.inputContainer}>
+        <InstructionText
+          style={isLandscape && { fontSize: moderateScale(theme.typography.sizes.lg) }}
+        >
+          Enter a number
+        </InstructionText>
         <TextInput
-          style={styles.numberInput}
+          style={dynamicStyles.numberInput}
           keyboardType="number-pad"
           autoCorrect={false}
           autoCapitalize="none"
@@ -48,44 +93,35 @@ export default function StartGameScreen() {
           value={enteredNumber}
           onChangeText={numberInputHandler}
         />
-        <View style={styles.buttonsContainer}>
-          <View style={styles.buttonContainer}>
-            <Button onPress={resetInputHandler}>Reset</Button>
+        <View style={dynamicStyles.buttonsContainer}>
+          <View style={dynamicStyles.buttonContainer}>
+            <Button
+              onPress={resetInputHandler}
+              style={
+                isLandscape && {
+                  margin: moderateScale(theme.spacing.xs),
+                  padding: moderateScale(theme.spacing.xs),
+                }
+              }
+            >
+              Reset
+            </Button>
           </View>
-          <View style={styles.buttonContainer}>
-            <Button onPress={confirmInputHandler}>Confirm</Button>
+          <View style={dynamicStyles.buttonContainer}>
+            <Button
+              onPress={confirmInputHandler}
+              style={
+                isLandscape && {
+                  margin: moderateScale(theme.spacing.xs),
+                  padding: moderateScale(theme.spacing.xs),
+                }
+              }
+            >
+              Confirm
+            </Button>
           </View>
         </View>
       </Card>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  rootContainer: {
-    flex: 1,
-    paddingTop: theme.spacing.xxl * 2,
-    alignItems: 'center',
-    gap: theme.spacing.xl,
-  },
-  inputContainer: {
-    gap: theme.spacing.md,
-  },
-  numberInput: {
-    height: 70,
-    width: 70,
-    fontSize: theme.typography.sizes.xxl,
-    borderBottomColor: theme.colors.accent[400],
-    borderBottomWidth: 2,
-    color: theme.colors.accent[400],
-    fontFamily: theme.typography.fonts.bold,
-    textAlign: 'center',
-  },
-  buttonsContainer: {
-    flexDirection: 'row',
-    gap: theme.spacing.sm,
-  },
-  buttonContainer: {
-    flex: 1,
-  },
-});

@@ -13,14 +13,14 @@ export default function Button({ children, style, ...pressableProps }: ButtonPro
 
   const dynamicStyles = StyleSheet.create({
     buttonOuterContainer: {
-      borderRadius: moderateScale(theme.borderRadius.lg),
+      borderRadius: moderateScale(theme.borderRadius.xl),
       margin: horizontalScale(theme.spacing.xs),
       overflow: 'hidden',
     },
     buttonInnerContainer: {
       backgroundColor: theme.colors.primary[700],
       paddingVertical: moderateScale(theme.spacing.sm),
-      paddingHorizontal: horizontalScale(theme.spacing.lg),
+      paddingHorizontal: horizontalScale(theme.spacing.sm),
       elevation: 2,
       alignItems: 'center',
       justifyContent: 'center',
