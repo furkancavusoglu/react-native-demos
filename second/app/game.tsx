@@ -10,6 +10,7 @@ import InstructionText from '../src/components/ui/InstructionText';
 import { theme } from '../src/theme';
 import { useGameStore } from '../src/store/game';
 import { GuessDirection } from '../src/types/game';
+import { useResponsive } from '../src/hooks/useResponsive';
 
 type RouteParams = {
   number: string;
@@ -18,6 +19,7 @@ type RouteParams = {
 export default function GameScreen() {
   const { number } = useLocalSearchParams<RouteParams>();
   const userNumber = parseInt(number);
+  const { moderateScale, horizontalScale, isLargeDevice } = useResponsive();
 
   const { currentGuess, guessRounds, isGameOver, initializeGame, makeGuess } = useGameStore();
 
@@ -41,33 +43,86 @@ export default function GameScreen() {
     }
   };
 
+  const dynamicStyles = StyleSheet.create({
+    container: {
+      flex: 1,
+      padding: horizontalScale(theme.spacing.md),
+      paddingTop: moderateScale(theme.spacing.lg),
+      alignItems: isLargeDevice ? 'center' : undefined,
+    },
+    card: {
+      marginTop: moderateScale(theme.spacing.sm),
+      gap: moderateScale(theme.spacing.sm),
+      maxWidth: isLargeDevice ? 500 : '100%',
+    },
+    instructionText: {
+      marginBottom: moderateScale(theme.spacing.sm),
+      fontSize: moderateScale(theme.typography.sizes.xl),
+      textAlign: 'center',
+    },
+    buttonsContainer: {
+      flexDirection: 'row',
+      gap: horizontalScale(theme.spacing.sm),
+    },
+    buttonContainer: {
+      flex: 1,
+    },
+    listContainer: {
+      flex: 1,
+      marginTop: moderateScale(theme.spacing.md),
+      maxWidth: isLargeDevice ? 500 : '100%',
+    },
+    guessLogCard: {
+      flex: 1,
+      padding: moderateScale(theme.spacing.md),
+    },
+    guessLogTitle: {
+      textAlign: 'center',
+      marginBottom: moderateScale(theme.spacing.sm),
+    },
+    guessLogItem: {
+      flexDirection: 'row',
+      justifyContent: 'center',
+      backgroundColor: theme.colors.primary[700],
+      padding: moderateScale(theme.spacing.sm),
+      marginVertical: moderateScale(theme.spacing.xs),
+      borderRadius: theme.borderRadius.lg,
+      ...theme.shadows.sm,
+    },
+    guessLogText: {
+      fontFamily: theme.typography.fonts.regular,
+      fontSize: moderateScale(theme.typography.sizes.md),
+      color: theme.colors.accent[400],
+    },
+  });
+
   return (
-    <View style={styles.container}>
+    <View style={dynamicStyles.container}>
       <Title title="Opponent's Guess" />
       <NumberContainer>{currentGuess}</NumberContainer>
-      <Card style={styles.card}>
-        <InstructionText style={styles.instructionText}>Higher or lower?</InstructionText>
-        <View style={styles.buttonsContainer}>
-          <View style={styles.buttonContainer}>
+      <Card style={dynamicStyles.card}>
+        <InstructionText style={dynamicStyles.instructionText}>Higher or lower?</InstructionText>
+        <View style={dynamicStyles.buttonsContainer}>
+          <View style={dynamicStyles.buttonContainer}>
             <Button onPress={() => handleGuess('higher')}>
-              <Ionicons name="add" size={20} color={theme.colors.accent[400]} />
+              <Ionicons name="add" size={moderateScale(20)} color={theme.colors.accent[400]} />
             </Button>
           </View>
-          <View style={styles.buttonContainer}>
+          <View style={dynamicStyles.buttonContainer}>
             <Button onPress={() => handleGuess('lower')}>
-              <Ionicons name="remove" size={20} color={theme.colors.accent[400]} />
+              <Ionicons name="remove" size={moderateScale(20)} color={theme.colors.accent[400]} />
             </Button>
           </View>
         </View>
       </Card>
-      <View style={styles.listContainer}>
-        <Card style={styles.guessLogCard}>
-          <InstructionText style={styles.guessLogTitle}>Guess Log</InstructionText>
+      <View style={dynamicStyles.listContainer}>
+        <Card style={dynamicStyles.guessLogCard}>
+          <InstructionText style={dynamicStyles.guessLogTitle}>Guess Log</InstructionText>
           <FlatList
             data={guessRounds}
             renderItem={({ item, index }) => (
-              <View style={styles.guessLogItem}>
-                <Text style={styles.guessLogText}>
+              <View style={dynamicStyles.guessLogItem}>
+                <Text style={dynamicStyles.guessLogText}>
                   Guess {guessRounds.length - index}: {item.number}
                 </Text>
               </View>
@@ -79,53 +134,3 @@ export default function GameScreen() {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: theme.spacing.md,
-    paddingTop: theme.spacing.lg,
-  },
-  card: {
-    marginTop: theme.spacing.sm,
-    gap: theme.spacing.sm,
-  },
-  instructionText: {
-    marginBottom: theme.spacing.sm,
-    fontSize: theme.typography.sizes.xl,
-    textAlign: 'center',
-  },
-  buttonsContainer: {
-    flexDirection: 'row',
-    gap: theme.spacing.sm,
-  },
-  buttonContainer: {
-    flex: 1,
-  },
-  listContainer: {
-    flex: 1,
-    marginTop: theme.spacing.md,
-  },
-  guessLogCard: {
-    flex: 1,
-    padding: theme.spacing.md,
-  },
-  guessLogTitle: {
-    textAlign: 'center',
-    marginBottom: theme.spacing.sm,
-  },
-  guessLogItem: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    backgroundColor: theme.colors.primary[700],
-    padding: theme.spacing.sm,
-    marginVertical: theme.spacing.xs,
-    borderRadius: theme.borderRadius.lg,
-    ...theme.shadows.sm,
-  },
-  guessLogText: {
-    fontFamily: theme.typography.fonts.regular,
-    fontSize: theme.typography.sizes.md,
-    color: theme.colors.accent[400],
-  },
-});
