@@ -1,12 +1,28 @@
-import { StatusBar } from 'expo-status-bar';
-import { Text, View } from 'react-native';
-import '../global.css';
+import { FlatList, View } from 'react-native';
+import { CATEGORIES } from '../data/dummyData';
+import CategoryGridTile from '../components/CategoryGridTile';
+import { router } from 'expo-router';
 
-export default function App() {
+export default function Index() {
+  function pressHandler(id: string) {
+    router.push(`/meals/${id}`);
+  }
+
   return (
-    <View>
-      <Text className="text-red-500">Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
+    <View className="flex-1">
+      <FlatList
+        className="p-2"
+        numColumns={2}
+        data={CATEGORIES}
+        keyExtractor={item => item.id}
+        renderItem={({ item }) => (
+          <CategoryGridTile
+            title={item.title}
+            color={item.color}
+            onPress={() => pressHandler(item.id)}
+          />
+        )}
+      />
     </View>
   );
 }
