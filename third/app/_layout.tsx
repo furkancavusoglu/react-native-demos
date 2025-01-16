@@ -1,5 +1,10 @@
 import { Stack } from 'expo-router';
+import { CATEGORIES } from '../data/dummyData';
 import '../global.css';
+
+type CategoryParams = {
+  category: string;
+};
 
 export default function RootLayout() {
   return (
@@ -8,7 +13,6 @@ export default function RootLayout() {
         headerStyle: {
           backgroundColor: '#ffffff',
         },
-        headerTintColor: '#1f2937',
         contentStyle: {
           backgroundColor: '#f3f4f6',
         },
@@ -19,6 +23,15 @@ export default function RootLayout() {
         options={{
           title: 'All Categories',
         }}
+      />
+      <Stack.Screen
+        name="meals/[category]"
+        options={({ route }) => ({
+          title: CATEGORIES.find(cat => cat.id === (route.params as CategoryParams).category)
+            ?.title,
+          headerBackTitle: 'Back',
+          headerBackTintColor: '#0096FF',
+        })}
       />
     </Stack>
   );

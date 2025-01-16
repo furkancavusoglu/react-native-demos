@@ -1,28 +1,43 @@
-import { FlatList, View } from 'react-native';
+import { FlatList } from 'react-native';
+import { router } from 'expo-router';
 import { CATEGORIES } from '../data/dummyData';
 import CategoryGridTile from '../components/CategoryGridTile';
-import { router } from 'expo-router';
 
-export default function Index() {
-  function pressHandler(id: string) {
-    router.push(`/meals/${id}`);
+type CategoryItem = {
+  id: string;
+  title: string;
+  color: string;
+};
+
+type RenderItemProps = {
+  item: CategoryItem;
+};
+
+export default function CategoriesScreen() {
+  function navigateToMeals(categoryId: string) {
+    router.push({
+      pathname: '/meals/[category]',
+      params: { category: categoryId },
+    });
+  }
+
+  function renderCategoryItem({ item }: RenderItemProps) {
+    return (
+      <CategoryGridTile
+        title={item.title}
+        color={item.color}
+        onPress={() => navigateToMeals(item.id)}
+      />
+    );
   }
 
   return (
-    <View className="flex-1">
-      <FlatList
-        className="p-2"
-        numColumns={2}
-        data={CATEGORIES}
-        keyExtractor={item => item.id}
-        renderItem={({ item }) => (
-          <CategoryGridTile
-            title={item.title}
-            color={item.color}
-            onPress={() => pressHandler(item.id)}
-          />
-        )}
-      />
-    </View>
+    <FlatList
+      data={CATEGORIES}
+      keyExtractor={item => item.id}
+      numColumns={2}
+      renderItem={renderCategoryItem}
+      className="p-2"
+    />
   );
 }
