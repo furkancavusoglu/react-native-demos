@@ -1,6 +1,7 @@
-import { useLocalSearchParams } from 'expo-router';
-import { FlatList, Text } from 'react-native';
+import { useLocalSearchParams, router } from 'expo-router';
+import { FlatList } from 'react-native';
 import { MEALS } from '../../data/dummyData';
+import MealItem from '../../components/MealItem';
 
 type MealItem = {
   id: string;
@@ -10,6 +11,12 @@ type MealItem = {
   duration: number;
   complexity: string;
   affordability: string;
+  ingredients: string[];
+  steps: string[];
+  isGlutenFree: boolean;
+  isVegan: boolean;
+  isVegetarian: boolean;
+  isLactoseFree: boolean;
 };
 
 type RenderItemProps = {
@@ -18,19 +25,18 @@ type RenderItemProps = {
 
 export default function MealsScreen() {
   const { category } = useLocalSearchParams<{ category: string }>();
-
   const meals = MEALS.filter(meal => meal.categoryIds.includes(category));
 
   function renderMealItem({ item }: RenderItemProps) {
-    return <Text>{item.title}</Text>;
+    function pressHandler() {
+      router.push({
+        pathname: '/meal-details/[id]',
+        params: { id: item.id },
+      });
+    }
+
+    return <MealItem item={item} onPress={pressHandler} />;
   }
 
-  return (
-    <FlatList
-      data={meals}
-      keyExtractor={item => item.id}
-      renderItem={renderMealItem}
-      className="flex-1"
-    />
-  );
+  return <FlatList data={meals} keyExtractor={item => item.id} renderItem={renderMealItem} />;
 }

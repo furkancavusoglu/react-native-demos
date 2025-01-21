@@ -1,9 +1,13 @@
 import { Stack } from 'expo-router';
-import { CATEGORIES } from '../data/dummyData';
+import { CATEGORIES, MEALS } from '../data/dummyData';
 import '../global.css';
 
 type CategoryParams = {
   category: string;
+};
+
+type MealParams = {
+  id: string;
 };
 
 export default function RootLayout() {
@@ -13,6 +17,7 @@ export default function RootLayout() {
         headerStyle: {
           backgroundColor: '#ffffff',
         },
+        headerTintColor: '#1f2937',
         contentStyle: {
           backgroundColor: '#f3f4f6',
         },
@@ -30,7 +35,14 @@ export default function RootLayout() {
           title: CATEGORIES.find(cat => cat.id === (route.params as CategoryParams).category)
             ?.title,
           headerBackTitle: 'Back',
-          headerBackTintColor: '#0096FF',
+        })}
+      />
+      <Stack.Screen
+        name="meal-details/[id]"
+        options={({ route }) => ({
+          presentation: 'modal',
+          title: MEALS.find(meal => meal.id === (route.params as MealParams).id)?.title,
+          headerBackTitle: 'Back',
         })}
       />
     </Stack>
