@@ -1,4 +1,5 @@
-import { View, Text, Image, ScrollView } from 'react-native';
+import { View, Text, Image, ScrollView, ActivityIndicator } from 'react-native';
+import { useState } from 'react';
 
 interface MealDetailsProps {
   item: {
@@ -31,9 +32,36 @@ export default function MealDetails({ item }: MealDetailsProps) {
     isLactoseFree,
   } = item;
 
+  const [isLoading, setIsLoading] = useState(true);
+  const [hasError, setHasError] = useState(false);
+
   return (
     <ScrollView className="flex-1 bg-white">
-      <Image source={{ uri: imageUrl }} className="w-full h-64" />
+      <View className="relative">
+        <Image
+          source={{ uri: imageUrl }}
+          className="w-full h-64"
+          onLoadStart={() => {
+            setIsLoading(true);
+            setHasError(false);
+          }}
+          onLoadEnd={() => setIsLoading(false)}
+          onError={() => {
+            setIsLoading(false);
+            setHasError(true);
+          }}
+        />
+        {isLoading && (
+          <View className="absolute inset-0 items-center justify-center bg-gray-100">
+            <ActivityIndicator size="large" color="steelblue" />
+          </View>
+        )}
+        {hasError && (
+          <View className="absolute inset-0 items-center justify-center bg-gray-100">
+            <Text className="text-gray-500 font-medium">Image not found</Text>
+          </View>
+        )}
+      </View>
       <View className="p-4">
         <Text className="text-2xl font-bold text-center mb-2">{title}</Text>
 
