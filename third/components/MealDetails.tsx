@@ -38,8 +38,8 @@ export default function MealDetails({ item }: MealDetailsProps) {
   const [isTooltipVisible, setIsTooltipVisible] = useState(false);
 
   return (
-    <Pressable onPress={() => setIsTooltipVisible(false)} className="flex-1">
-      <ScrollView className="flex-1 bg-white">
+    <View className="flex-1 bg-white">
+      <ScrollView>
         <View className="relative">
           <Image
             source={{ uri: imageUrl }}
@@ -65,44 +65,44 @@ export default function MealDetails({ item }: MealDetailsProps) {
             </View>
           )}
         </View>
-        <View className="p-4">
-          <Text className="text-2xl font-bold text-center mb-4">{title}</Text>
+        <Pressable onPress={() => setIsTooltipVisible(false)}>
+          <View className="px-4 pt-4">
+            <Text className="text-2xl font-bold text-center mb-4">{title}</Text>
 
-          <Tags
-            duration={duration}
-            complexity={complexity}
-            affordability={affordability}
-            isGlutenFree={isGlutenFree}
-            isVegan={isVegan}
-            isVegetarian={isVegetarian}
-            isLactoseFree={isLactoseFree}
-            isTooltipVisible={isTooltipVisible}
-            setIsTooltipVisible={setIsTooltipVisible}
-          />
+            <Tags
+              duration={duration}
+              complexity={complexity}
+              affordability={affordability}
+              isGlutenFree={isGlutenFree}
+              isVegan={isVegan}
+              isVegetarian={isVegetarian}
+              isLactoseFree={isLactoseFree}
+              isTooltipVisible={isTooltipVisible}
+              setIsTooltipVisible={setIsTooltipVisible}
+            />
 
-          <View className="h-[1px] bg-gray-200 my-4" />
+            <View className="h-[1px] bg-gray-200 my-2" />
 
-          <View className="mb-4">
-            <Text className="text-lg font-bold mb-2">Ingredients</Text>
-            {ingredients.map((ingredient, index) => (
-              <Text key={index} className="text-gray-700 py-1">
-                • {ingredient}
-              </Text>
-            ))}
-          </View>
+            <View className="mb-4">
+              <Text className="text-lg font-bold mb-2">Ingredients</Text>
+              {ingredients.map((ingredient, index) => (
+                <Text key={index} className="text-gray-700 py-1">
+                  • {ingredient}
+                </Text>
+              ))}
+            </View>
 
-          <View>
-            <Text className="text-lg font-bold mb-2">Steps</Text>
-            {steps.map((step, index) => (
-              <View key={index} className="mb-2">
-                <Text className="text-gray-700">
+            <View className="mb-6">
+              <Text className="text-lg font-bold mb-2">Steps</Text>
+              {steps.map((step, index) => (
+                <Text key={index} className="text-gray-700 py-1">
                   {index + 1}. {step}
                 </Text>
-              </View>
-            ))}
+              ))}
+            </View>
           </View>
-        </View>
+        </Pressable>
       </ScrollView>
-    </Pressable>
+    </View>
   );
 }

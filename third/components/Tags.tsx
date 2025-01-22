@@ -48,7 +48,9 @@ export default function Tags({
 
       <View className="flex-1">
         <View className="h-7 flex-row justify-end items-center relative">
-          <Text className="text-xs text-gray-500 uppercase tracking-wider">Dietary</Text>
+          <Pressable onPress={() => setIsTooltipVisible(true)}>
+            <Text className="text-xs text-gray-500 uppercase tracking-wider">Dietary</Text>
+          </Pressable>
           <Pressable
             onPress={() => setIsTooltipVisible(true)}
             className="ml-1 bg-gray-100 w-5 h-5 rounded-full items-center justify-center"
