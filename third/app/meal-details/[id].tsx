@@ -3,14 +3,14 @@ import { MEALS } from '../../data/dummyData';
 import MealDetails from '../../components/MealDetails';
 import { View, ActivityIndicator, Pressable, Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useFavorites } from '../../store/favorites-context';
+import { useFavoritesStore } from '../../store/favorites-store';
 import { useLayoutEffect, useCallback } from 'react';
 import { Ionicons } from '@expo/vector-icons';
 
 export default function MealDetailsScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const navigation = useNavigation();
-  const { isFavorite, addFavorite, removeFavorite, isLoading, error } = useFavorites();
+  const { isFavorite, addFavorite, removeFavorite, isLoading, error } = useFavoritesStore();
   const selectedMeal = MEALS.find(meal => meal.id === id);
 
   const mealIsFavorite = isFavorite(id);

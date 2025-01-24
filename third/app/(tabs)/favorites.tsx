@@ -1,14 +1,21 @@
 import { View, Text, FlatList, ActivityIndicator } from 'react-native';
-import { useFavorites } from '../../store/favorites-context';
+import { useFavoritesStore } from '../../store/favorites-store';
 import { MEALS } from '../../data/dummyData';
 import MealItem from '../../components/MealItem';
 import { router } from 'expo-router';
-import { useCallback, useMemo } from 'react';
+import { useCallback, useMemo, useEffect } from 'react';
 
 export default function Favorites() {
-  const { ids, isLoading, error } = useFavorites();
+  const { ids, isLoading, error, clearError } = useFavoritesStore();
 
   const favoriteMeals = useMemo(() => MEALS.filter(meal => ids.includes(meal.id)), [ids]);
+
+  useEffect(() => {
+    if (error) {
+      const timer = setTimeout(clearError, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [error, clearError]);
 
   const renderMealItem = useCallback(({ item }: { item: (typeof MEALS)[0] }) => {
     const pressHandler = () => {
@@ -59,6 +66,11 @@ export default function Favorites() {
         maxToRenderPerBatch={10}
         windowSize={5}
       />
+      {error && (
+        <View className="absolute top-4 left-4 right-4 bg-red-100 p-4 rounded-lg z-50">
+          <Text className="text-red-600">{error}</Text>
+        </View>
+      )}
     </View>
   );
 }
