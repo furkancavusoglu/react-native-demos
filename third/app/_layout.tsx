@@ -1,44 +1,29 @@
 import { Stack } from 'expo-router';
-import { CATEGORIES } from '../data/dummyData';
-import '../global.css';
-
-type CategoryParams = {
-  category: string;
-};
 
 export default function RootLayout() {
   return (
     <Stack
       screenOptions={{
-        headerStyle: {
-          backgroundColor: '#ffffff',
-        },
-        contentStyle: {
-          backgroundColor: '#f3f4f6',
-        },
+        headerStyle: { backgroundColor: '#f5f5f5' },
+        headerTintColor: '#3498db',
+        contentStyle: { backgroundColor: '#fff' },
+        headerBackTitle: 'Back',
+        headerTitleStyle: { color: '#333' },
       }}
     >
+      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
       <Stack.Screen
-        name="index"
+        name="meals/[category]"
         options={{
-          title: 'All Categories',
+          title: 'Meals Overview',
         }}
       />
       <Stack.Screen
-        name="meals/[category]"
-        options={({ route }) => ({
-          title: CATEGORIES.find(cat => cat.id === (route.params as CategoryParams).category)
-            ?.title,
-          headerBackTitle: 'Back',
-        })}
-      />
-      <Stack.Screen
         name="meal-details/[id]"
-        options={() => ({
+        options={{
+          title: 'About the Meal',
           presentation: 'modal',
-          title: 'Recipe Details',
-          headerBackTitle: 'Back',
-        })}
+        }}
       />
     </Stack>
   );
